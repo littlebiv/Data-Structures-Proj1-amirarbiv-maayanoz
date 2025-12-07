@@ -97,7 +97,21 @@ class AVLTree(object):
 	@returns: a tuple (x,e) where x is the node corresponding to key (or None if not found),
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
-	def finger_search(self, key):
+	def finger_search(self, key): 
+		if self.root is None: #check if tree is empty
+			return None, -1
+		#if key > self.max_node.key or key < self.min_node.key: #check if key is out of bounds
+			#return None, -1
+
+		count = 0
+		curr = self.max_node
+		while curr.key > key: #move up until we find the correct subtree
+			curr = curr.parent
+			count += 1
+		(found, edges) = self.search(key) #search from the found subtree
+		if found is not None:
+			return found, edges + count
+
 		return None, -1
 
 
