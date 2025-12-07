@@ -209,15 +209,33 @@ class AVLTree(object):
 	@returns: the maximal node, None if the dictionary is empty
 	"""
 	def max_node(self):
-		return None
+		if self.root is None: #check if tree is empty
+			return None
+		curr = self.root
+		while curr.right.is_real_node(): #go right until we reach the max
+			curr = curr.right
+		return curr
+
+	"""returns the node with the minimal key in the dictionary
+
+	@rtype: AVLNode
+	@returns: the minimal node, None if the dictionary is empty
+	"""
+	def min_node(self):
+		if self.root is None: #check if tree is empty
+			return None
+		curr = self.root
+		while curr.left.is_real_node(): #go left until we reach the min
+			curr = curr.left
+		return curr
 
 	"""returns the number of items in dictionary 
 
 	@rtype: int
 	@returns: the number of items in dictionary 
 	"""
-	def size(self):
-		return -1	
+	def size(self): #simple
+		return self.size	
 
 
 	"""returns the root of the tree representing the dictionary
