@@ -1,9 +1,9 @@
-#id1:
-#name1:
-#username1:
-#id2:
-#name2:
-#username2:
+#id1: 316175827
+#name1: Maayan Oz
+#username1: maayanoz
+#id2: 211627658
+#name2: Amir Arbiv
+#username2: amirarbiv1
 
 
 """A class represnting a node in an AVL tree"""
@@ -16,12 +16,18 @@ class AVLNode(object):
 	@type value: string
 	@param value: data of your node
 	"""
-	def __init__(self, key, value):
+	def __init__(self, key, value, is_virtual=False):
 		self.key = key
 		self.value = value
 		self.left = None
 		self.right = None
 		self.parent = None
+
+		"""Indicates whether the node is a virtual node
+		@type: bool
+		"""
+		self.is_virtual = is_virtual
+
 		self.height = -1
 		
 
@@ -31,7 +37,7 @@ class AVLNode(object):
 	@returns: False if self is a virtual node, True otherwise.
 	"""
 	def is_real_node(self):
-		return False
+		return not self.is_virtual
 
 
 """
