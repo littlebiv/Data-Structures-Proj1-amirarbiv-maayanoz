@@ -1,2 +1,2 @@
-# Data-Structures-Ex1-amirarbiv-maayanoz
-Ex 1 - Data Structures course
+# Data-Structures-Proj1-amirarbiv-maayanoz
+Proj 1 - Data Structures course
