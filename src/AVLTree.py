@@ -243,5 +243,7 @@ class AVLTree(object):
 	@rtype: AVLNode
 	@returns: the root, None if the dictionary is empty
 	"""
-	def get_root(self):
+	def get_root(self): #simple
+		if self.root is not None:
+			return self.root
 		return None
