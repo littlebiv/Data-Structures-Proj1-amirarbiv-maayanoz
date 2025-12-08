@@ -239,8 +239,24 @@ class AVLTree(object):
 	e is the number of edges on the path between the starting node and new node before rebalancing,
 	and h is the number of PROMOTE cases during the AVL rebalancing
 	"""
+
 	def finger_insert(self, key, val):
-		return None, -1, -1
+		if self.root is None: #check if tree is empty
+			new_node = AVLNode(key, val)
+			self.root = new_node
+			self.size += 1
+			return new_node, 0, 0
+		edges = 0
+		curr = self.max_node
+		while curr.key > key: #move up until we find the correct subtree
+			curr = curr.parent
+			edges += 1
+		(new_node, search_edges, rotations) = self.insert_from_node(self, key, val, curr) #insert from the found subtree
+		edges += search_edges
+		return new_node, edges, rotations
+
+
+
 
 
 	"""deletes node from the dictionary
