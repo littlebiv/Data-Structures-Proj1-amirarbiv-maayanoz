@@ -67,18 +67,14 @@ class AVLTree(object):
 		count = 0
 		curr = self.root
 		while curr.key != key: #regular BST search
+			if curr.is_real_node == False:
+				return None, -1
 			if key > curr.key:
-				if curr.right.is_real_node():
-					curr = curr.right
-					count += 1
-				else:
-					return None, -1
+				curr = curr.right
+				count += 1
 			else: #key < curr.key
-				if curr.left.is_real_node():
-					curr = curr.left
-					count += 1
-				else:
-					return None, -1
+				curr = curr.left
+				count += 1
 			
 		return curr, count+1
 
@@ -145,7 +141,7 @@ class AVLTree(object):
 	and h is the number of PROMOTE cases during the AVL rebalancing
 """
 
-	def insert_from_node(self, key, val, start_node):
+	def insert_from_node(self, key, val, start_node): #helping func for insertions
 		edges = 0
 		new_node = AVLNode(key, val)
 		curr = start_node
@@ -290,10 +286,8 @@ class AVLTree(object):
 		else:
 			self.root = node
 		temp.parent = node
-		#switch heights
-		temp_height = temp.height
-		temp.height = node.height
-		node.height = temp_height
+
+		update_height(node)#switch heights
 		return None
 #need to fix heights after rotation
 	def rotate_right(self, node): #code is similar to rotate_left
@@ -312,12 +306,18 @@ class AVLTree(object):
 		else:
 			self.root = node
 		temp.parent = node
-		#switch heights
-		temp_height = temp.height
-		temp.height = node.height
-		node.height = temp_height
+		
+		update_height(node) #switch heights
 		return None
 
+
+
+		def update_heights_after_rotation(self, node): #updating heights after rotation using update_heights
+			node.right.height = 1 + max(node.left.height, node.right.height)
+			node.left.height = 1 + max(node.left.height, node.right.height)
+			node.height = 1 + max(node.left.height, node.right.height)
+			return None
+				
 
 	"""deletes node from the dictionary
 
