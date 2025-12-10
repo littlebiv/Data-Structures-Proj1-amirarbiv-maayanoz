@@ -367,7 +367,7 @@ class AVLTree(object):
 			#rebalancing from new_node
 			self.rebalance_after_insert(key, new_node)
 			return
-		#code repeats, fix!
+
 		if tree2.root.key < key: #tree2's keys are smaller
 			new_node.left = tree2.root
 			update_heights(new_node)
@@ -378,7 +378,7 @@ class AVLTree(object):
 			#rebalancing from new_node
 			self.rebalance_after_insert(key, new_node)
 			return
-		return -1
+		return
 
 	def merge (self , tree2, curr, new_node): #helper function for join
 		while curr.left.height > new_node.left.height: #find the correct spot to insert new_node
@@ -407,6 +407,29 @@ class AVLTree(object):
 		return None, None
 
 	
+
+	def successor(self, node):
+		if node.right.is_real_node(): #go right once and then left until we reach the min
+			curr = node.right
+			while curr.left.is_real_node():
+				curr = curr.left
+			return curr
+		curr = node
+		while curr.parent is not None and curr.parent.right == curr: #go up until we find a parent that is a left child
+			curr = curr.parent
+		return curr.parent #could be None if no successor exists
+
+	def predecessor(self, node):
+		if node.left.is_real_node(): #go left once and then right until we reach the max
+			curr = node.left
+			while curr.right.is_real_node():
+				curr = curr.right
+			return curr
+		curr = node
+		while curr.parent is not None and curr.parent.left == curr: #go up until we find a parent that is a right child
+			curr = curr.parent
+		return curr.parent #could be None if no predecessor exists
+
 	"""returns an array representing dictionary 
 
 	@rtype: list
