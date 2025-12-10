@@ -404,7 +404,25 @@ class AVLTree(object):
 	dictionary larger than node.key.
 	"""
 	def split(self, node):
-		return None, None
+		if node is max_node(self) or node is min_node(self): #edge cases
+			delete(node)
+			return self, None
+		left_tree = AVLTree()
+		right_tree = AVLTree()
+		left_tree.root = node.predecessor(node)
+		right_tree.root = node.successor(node)
+		
+		curr = left_tree.root
+		while predecessor(curr) is not None:
+			curr = predecessor(curr)
+			left_tree.insert(curr.key, curr.value)
+		curr = right_tree.root
+		while successor(curr) is not None:	
+			curr = successor(curr)
+			right_tree.insert(curr.key, curr.value)
+
+			
+
 
 	
 
