@@ -19,8 +19,12 @@ class AVLNode(object):
 	def __init__(self, key, value, is_virtual=False):
 		self.key = key
 		self.value = value
-		self.left = AVLNode(-1, "", True) #virtual nodes
-		self.right = AVLNode(-1, "", True) #like they asked in the instructions
+		if is_virtual:
+			self.left = None
+			self.right = None
+		else:
+			self.left = AVLNode(-1, "", True)
+			self.right = AVLNode(-1, "", True)
 		self.parent = None
 		self.height = 0 if not is_virtual else -1
 		"""Indicates whether the node is a virtual node
@@ -62,12 +66,14 @@ class AVLTree(object):
 	def search(self, key):
 		if self.root is None:
 			return None, -1
-		#if key > self.max_node.key or key < self.min_node.key: #check if key is out of bounds
-		#	return None, -1
+		return self.search_from_node(key, self.root)
+		
+
+	def search_from_node(self, key, start_node): #helping func for search
 		count = 0
-		curr = self.root
+		curr = start_node
 		while curr.key != key: #regular BST search
-			if curr.is_real_node == False:
+			if not curr.is_real_node():
 				return None, -1
 			if key > curr.key:
 				curr = curr.right
@@ -96,13 +102,13 @@ class AVLTree(object):
 			#return None, -1
 
 		count = 0
-		curr = self.max_node
+		curr = self.max_node()
 		while curr.key > key: #move up until we find the correct subtree
 			if curr.parent is None:
 				break
 			curr = curr.parent
 			count += 1
-		(found, edges) = self.search(key) #search from the found subtree
+		(found, edges) = self.search_from_node(key, curr) #search from the found subtree
 		if found is not None:
 			return found, edges + count
 
@@ -183,7 +189,7 @@ class AVLTree(object):
 	def update_heights(self, node):
 		curr = node.parent
 		while curr is not None:
-			curr.height = 1 + max(curr.right.height, curr.right.height)
+			curr.height = 1 + max(curr.right.height, curr.left.height)
 			curr = curr.parent
 		return None
 
@@ -260,7 +266,7 @@ class AVLTree(object):
 			edges += 1
 		(new_node, search_edges, rotations) = self.insert_from_node(key, val, curr) #insert from the found subtree
 		edges += search_edges
-		update_heights(new_node)
+		self.update_heights(new_node)
 		return new_node, edges, rotations
 
 
@@ -287,7 +293,7 @@ class AVLTree(object):
 			self.root = node
 		temp.parent = node
 
-		update_height(node)#switch heights
+		self.update_heights(node)#switch heights
 		return None
 #need to fix heights after rotation
 	def rotate_right(self, node): #code is similar to rotate_left
@@ -307,7 +313,7 @@ class AVLTree(object):
 			self.root = node
 		temp.parent = node
 		
-		update_height(node) #switch heights
+		self.update_heights(node) #switch heights
 		return None
 
 
@@ -362,7 +368,7 @@ class AVLTree(object):
 		if self.size >= tree2.size: #self is bigger
 			if key < self.root.key: #self's keys are larger
     
-				curr = tree2.root 
+				curr = self.root 
 				#go left until we find the correct spot to insert new_node
 				while curr.left.height > tree2.root.height:
 					curr = curr.left
@@ -388,7 +394,7 @@ class AVLTree(object):
 				self.root.parent = new_node
 				update_heights(new_node)
 				new_node.parent = curr
-				curr.side1 = new_node
+				curr.right = new_node
 				tree2._size += self._size + 1
 
 		else: #tree2 is bigger
