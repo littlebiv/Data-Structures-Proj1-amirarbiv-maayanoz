@@ -567,16 +567,16 @@ class AVLTree(object):
 			return tree_small, tree_big
 	
 
-	# def successor(self, node):
-	# 	if node.right.is_real_node(): #go right once and then left until we reach the min
-	# 		curr = node.right
-	# 		while curr.left.is_real_node():
-	# 			curr = curr.left
-	# 		return curr
-	# 	curr = node
-	# 	while curr.parent is not None and curr.parent.right == curr: #go up until we find a parent that is a left child
-	# 		curr = curr.parent
-	# 	return curr.parent #could be None if no successor exists
+	def successor(self, node): #time complexity O(log n)
+		if node.right.is_real_node(): #go right once and then left until we reach the min
+			curr = node.right
+			while curr.left.is_real_node():
+				curr = curr.left
+			return curr
+		curr = node
+		while curr.parent is not None and curr.parent.right == curr: #go up until we find a parent that is a left child
+			curr = curr.parent
+		return curr.parent #could be None if no successor exists
 
 	# def predecessor(self, node):
 	# 	if node.left.is_real_node(): #go left once and then right until we reach the max
