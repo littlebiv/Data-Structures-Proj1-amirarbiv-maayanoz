@@ -612,3 +612,25 @@ class AVLTree(object):
 	"""
 	def get_root(self): #simple
 		return self.root #None if empty
+
+#create tests for all functions
+# def tests():
+#     ex_tree = AVLTree()
+#     ex_tree.insert(10, "a")
+#     ex_tree.insert(20, "b")
+#     ex_tree.insert(5, "c")
+#     ex_tree.insert(30, "d")
+#     ex_tree.insert(25, "e")
+#     found, edges, rotations = ex_tree.finger_insert(15, "f")
+#     ex2_tree = AVLTree()
+#     ex2_tree.insert(40, "g")
+#     ex2_tree.insert(50, "h")
+#     ex2_tree.join(ex_tree, 35, "i")
+#     print(ex2_tree.avl_to_array())
+#     left_tree, right_tree = ex2_tree.split(ex2_tree.search(10)[0])
+    
+#     print(right_tree.avl_to_array()) #
+#     print(left_tree.avl_to_array()) #
+
+# #run tests
+# tests()
