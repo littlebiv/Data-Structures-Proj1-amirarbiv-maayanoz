@@ -356,17 +356,17 @@ class AVLTree(object):
 	"""
 	def join(self, tree2, key, val):
 		#handle edge cases
-		if tree2._size + self._size == 0: #both trees are empty
+		if tree2.root is None and self.root is None: #both trees are empty
 			new_node = AVLNode(key, val)
 			self.root = new_node
 			self._size = 1
 			return
-		if self._size == 0: #self is empty
+		if self.root is None: #self is empty
 			tree2.insert(key, val)
 			self.root = tree2.root
 			self._size = tree2._size
 			return
-		if tree2._size == 0: #tree2 is empty
+		if tree2.root is None: #tree2 is empty
 			self.insert(key, val)
 			return
 
@@ -374,9 +374,8 @@ class AVLTree(object):
 		#check which tree is bigger
 		#start from the root of the bigger tree and go down the left/right spine until heights are equal
 		#then insert new_node there and attach the smaller tree
-		if self._size >= tree2._size: #self is bigger
+		if self.root.height >= tree2.root.height: #self is bigger
 			if key < self.root.key: #self's keys are larger
-    
 				curr = self.root 
 				#go left until we find the correct spot to insert new_node
 				while curr.left.height > tree2.root.height:
@@ -386,14 +385,30 @@ class AVLTree(object):
 					new_node.right.parent = new_node
 				new_node.left = tree2.root
 				tree2.root.parent = new_node
-				update_heights(new_node)
+				self.update_heights(new_node)
 				new_node.parent = curr
 				curr.left = new_node
 				self._size += tree2._size + 1
     
-			else: #tree2's keys are larger
+			else: #tree2's keys are larger 
 				curr = self.root 
 				#go right until we find the correct spot to insert new_node
+				while curr.right.height > tree2.root.height:
+					curr = curr.right
+				new_node.left = curr.right
+				if new_node.left.is_real_node():
+					new_node.left.parent = new_node
+				new_node.right = tree2.root
+				tree2.root.parent = new_node
+				tree2.update_heights(new_node)
+				new_node.parent = curr
+				curr.right = new_node
+				self._size += tree2._size + 1
+
+		else: #tree2 is bigger
+			if key < self.root.key: #self's keys are larger				
+				curr = tree2.root 
+				#go left until we find the correct spot to insert new_node
 				while curr.right.height > self.root.height:
 					curr = curr.right
 				new_node.left = curr.right
@@ -401,46 +416,33 @@ class AVLTree(object):
 					new_node.left.parent = new_node
 				new_node.right = self.root
 				self.root.parent = new_node
-				update_heights(new_node)
+				self.update_heights(new_node)
 				new_node.parent = curr
 				curr.right = new_node
-				tree2._size += self._size + 1
+				#self is the returned tree
+				self.root = tree2.root
+				self._size += tree2._size + 1
 
-		else: #tree2 is bigger
-			if key < tree2.root.key: #self's keys are larger				
+
+			else: #tree2's keys are larger
 
 				curr = tree2.root 
 				#go left until we find the correct spot to insert new_node
-				while curr.left.height > tree2.root.height:
+				while curr.left.height > self.root.height:
 					curr = curr.left
 				new_node.right = curr.left
 				if new_node.right.is_real_node():
 					new_node.right.parent = new_node
-				new_node.left = tree2.root
-				tree2.root.parent = new_node
-				update_heights(new_node)
-				new_node.parent = curr
-				curr.left = new_node
-				self._size += tree2._size + 1
-
-
-			else: #tree2's keys are larger
-				
-				curr = self.root 
-				#go left until we find the correct spot to insert new_node
-				while curr.right.height > self.root.height:
-					curr = curr.right
-				new_node.left = curr.right
-				if new_node.left.is_real_node():
-					new_node.left.parent = new_node
-				new_node.right = self.root
+				new_node.left = self.root
 				self.root.parent = new_node
-				update_heights(new_node)
+				self.update_heights(new_node)
 				new_node.parent = curr
 				curr.right = new_node
-				tree2._size += self._size + 1
+				#self is the returned tree
+				self.root = tree2.root
+				self._size += tree2._size + 1
 
-			update_heights(new_node.parent)
+			self.update_heights(new_node.parent)
 			#rebalancing from new_node
 			self.rebalance_after_insert(key, new_node)
 			return
