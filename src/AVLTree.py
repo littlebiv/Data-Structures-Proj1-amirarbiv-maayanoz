@@ -502,16 +502,20 @@ class AVLTree(object):
 			left, right = self.split_rec(node.right, key)
 			t_org_l = AVLTree()
 			t_org_l.root = node.left
+			if t_org_l.root:
+				t_org_l.root.parent = None
 			if node.is_real_node():
-				self.join(t_org_l, left, node.key, node.value)
-			return node, right
+				t_org_l.join(left, node.key, node.value)
+			return t_org_l, right
 		elif node.key > key:
 			left, right = self.split_rec(node.left, key)
 			t_org_r = AVLTree()
 			t_org_r.root = node.right
+			if t_org_r.root:
+				t_org_r.root.parent = None
 			if node.is_real_node():
-				self.join(t_org_r, right, node.key, node.value)
-			return left, node
+				t_org_r.join(right, node.key, node.value)
+			return left, t_org_r
 		else: #node.key == key
 			tree_small = AVLTree()
 			tree_small.root = node.left
