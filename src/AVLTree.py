@@ -350,11 +350,10 @@ class AVLTree(object):
 			self.root = None
 			self._size = 0
 			return
-		if node.right.is_real_node() is False and node.left.is_real_node() is False: #node is a leaf
-			node.is_virtual = True
-			node.key = -1
-			node.value = None
-		if node.right.is_real_node() is False and node.left.is_real_node() is True: #node has only left child
+		elif node.right.is_real_node() is False and node.left.is_real_node() is False: #node is a leaf
+			node = AVLNode(-1, "", True) #make it virtual
+			node.parent = None
+		elif node.right.is_real_node() is False and node.left.is_real_node() is True: #node has only left child
 			if node.parent is None: #node is root
 				self.root = node.left
 				self.root.parent = None
