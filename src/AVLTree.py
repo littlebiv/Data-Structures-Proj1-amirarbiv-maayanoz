@@ -99,8 +99,6 @@ class AVLTree(object):
 	def finger_search(self, key): #time complexity O(log n)
 		if self.root is None: #check if tree is empty
 			return None, -1
-		#if key > self.max_node.key or key < self.min_node.key: #check if key is out of bounds
-			#return None, -1
 
 		count = 0
 		curr = self.max_node()
@@ -494,38 +492,6 @@ class AVLTree(object):
 			return
 
 
-		# #help junc goes down the left/right spine and inserts new_node
-		# def join_helper(small, big, new_node, side1, side2):
-		# 	curr = small.root 
-		# 	#go left until we find the correct spot to insert new_node
-		# 	while curr.side1.height > small.root.height:
-		# 		curr = curr.side1
-		# 	new_node.side2 = curr.side1
-		# 	if new_node.side2.is_real_node():
-		# 		new_node.side2.parent = new_node
-		# 	new_node.side1 = small.root
-		# 	small.root.parent = new_node
-		# 	update_heights(new_node)
-		# 	new_node.parent = curr
-		# 	curr.side1 = new_node
-		# 	big._size += small._size + 1
-		# 	return
-			
-
-
-	# def merge (self , tree2, curr, new_node): #helper function for join
-	# 	while curr.left.height > new_node.left.height: #find the correct spot to insert new_node
-	# 		curr = curr.left
-	# 	new_node.right = curr
-	# 	update_heights(new_node)
-	# 	new_node.parent = curr.parent
-	# 	curr.parent.left = new_node
-	# 	curr.parent = new_node
-	# 	self._size += tree2._size + 1
-	# 	update_heights(new_node.parent)
-	# 	return self
-
-
 	"""splits the dictionary at a given node
 
 	@type node: AVLNode
@@ -589,16 +555,6 @@ class AVLTree(object):
 			curr = curr.parent
 		return curr.parent #could be None if no successor exists
 
-	# def predecessor(self, node):
-	# 	if node.left.is_real_node(): #go left once and then right until we reach the max
-	# 		curr = node.left
-	# 		while curr.right.is_real_node():
-	# 			curr = curr.right
-	# 		return curr
-	# 	curr = node
-	# 	while curr.parent is not None and curr.parent.left == curr: #go up until we find a parent that is a right child
-	# 		curr = curr.parent
-	# 	return curr.parent #could be None if no predecessor exists
 
 	"""returns an array representing dictionary 
 
@@ -632,18 +588,6 @@ class AVLTree(object):
 			curr = curr.right
 		return curr
 
-	"""returns the node with the minimal key in the dictionary
-
-	@rtype: AVLNode
-	@returns: the minimal node, None if the dictionary is empty
-	"""
-	def min_node(self): #time complexity O(log n)
-		if self.root is None: #check if tree is empty
-			return None
-		curr = self.root
-		while curr.left.is_real_node(): #go left until we reach the min
-			curr = curr.left
-		return curr
 
 	"""returns the number of items in dictionary 
 
@@ -663,25 +607,3 @@ class AVLTree(object):
 	def get_root(self): #time complexity O(1)
     #simple
 		return self.root #None if empty
-
-#create tests for all functions
-# def tests():
-#     ex_tree = AVLTree()
-#     ex_tree.insert(10, "a")
-#     ex_tree.insert(20, "b")
-#     ex_tree.insert(5, "c")
-#     ex_tree.insert(30, "d")
-#     ex_tree.insert(25, "e")
-#     found, edges, rotations = ex_tree.finger_insert(15, "f")
-#     ex2_tree = AVLTree()
-#     ex2_tree.insert(40, "g")
-#     ex2_tree.insert(50, "h")
-#     ex2_tree.join(ex_tree, 35, "i")
-#     print(ex2_tree.avl_to_array())
-#     left_tree, right_tree = ex2_tree.split(ex2_tree.search(10)[0])
-    
-#     print(right_tree.avl_to_array()) #
-#     print(left_tree.avl_to_array()) #
-
-# #run tests
-# tests()
